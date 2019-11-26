@@ -1,0 +1,104 @@
+<% include ../partials/header %>
+
+<br>
+<h4>Filter</h4>
+<hr>
+<form action="/" method="get">
+
+    <div class="col-auto my-3 row">
+        <label for="disabledTextInput" class="col-sm-2 col-form-label"><input type="checkbox" name="cbId">ID</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="disabledTextInput" name="id" value="" placeholder="ID">
+        </div>
+    </div>
+
+    <div class="col-auto my-3 row">
+        <label for="formGroupExampleInput2" class="col-sm-2 col-form-label"><input type="checkbox"
+                name="cbName">Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="formGroupExampleInput2" name="name" value="" placeholder="Name">
+        </div>
+    </div>
+
+    <div class="col-auto my-3 row">
+        <label class="col-sm-2 col-form-label" for="inlineFormCustomSelect"><input type="checkbox"
+                name="cbBoolean">Member</label>
+        <div class="col-sm-10">
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="member">
+                <option selected value="">Choose the members ...</option>
+                <option value="True">Garis</option>
+                <option value="False">Ridzi</option>
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<br>
+<br>
+<h4>Options</h4>
+<hr>
+<form action="/" method="post">
+    <div>
+        <div class="col-auto my-2 row">
+            <label for="disabledTextInput" class="col-sm-2 col-form-label"><input type="checkbox" name="cbId">ID</label>
+        </div>
+
+        <div class="col-auto my-2 row">
+            <label for="formGroupExampleInput2" class="col-sm-2 col-form-label"><input type="checkbox"
+                    name="cbName">Name</label>
+        </div>
+
+        <div class="col-auto my-2 row">
+            <label class="col-sm-2 col-form-label" for="inlineFormCustomSelect"><input type="checkbox"
+                    name="cbBoolean">Member</label>
+        </div>
+    </div>
+</form>
+
+<br>
+<br>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Member</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%# data.forEach((item, index) => {%>
+        <tr>
+            <td><%#= item.id %></td>
+            <td><%#= item.string %></td>
+            <td><%#= item.boolean %></td>
+            <td>
+                <a class="btn btn-success" href="edit/<%#= item.id %>">Edit</a>
+                <a class="btn btn-danger" href="delete/<%#= item.id %>">Delete</a>
+            </td>
+        </tr>
+        <%# }) %>
+    </tbody>
+</table>
+<br>
+
+<nav aria-label="Page navigation example" style="margin-top:1%">
+    <ul class="pagination">
+        <li class="page-item <%#= current == 1 ? 'disabled' : ''%>"><a class="page-link"
+                href="<%#= query.replace(`page=${parseInt(current)}`, `page=${parseInt(current) - 1}`) %>">Previous</a>
+        </li>
+        <%# for(let i = 1; i <= pages; i++){ %>
+        <li class="page-item <%#= current == i ? 'active' : '' %>"><a class="page-link"
+                href="<%#= query.replace(`page=${current}`, `page=${i}`) %>"><%#= i %></a></li>
+        <%# } %>
+        <li class="page-item <%#= current == pages ? 'disabled' : ''%>"><a class="page-link"
+                href="<%#= query.replace(`page=${parseInt(current)}`, `page=${parseInt(current) + 1}`) %>">Next</a>
+        </li>
+    </ul>
+</nav>
+
+<a class="btn btn-primary" href="add">Add Projects</a>
+<br>
+</div>
+<% include ../partials/footer %>
