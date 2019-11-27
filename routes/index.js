@@ -25,13 +25,18 @@ module.exports = (pool) => {
   // });
 
   router.post('/login', function (req, res, next) {
-    if (req.body.email == "ridzi@mail.com" && req.body.password == '1') {
-      req.session.user = req.body.email;
-      res.redirect('/projects')
-    } else {
-      req.flash('info', 'email or password is wrong')
-      res.redirect('/');
-    }
+    let { email, password } = req.body;
+    let sql = `SELECT email, password FROM users WHERE email = '${email}'`
+    pool.query(sql, (err, data) => {
+      // console.log(data);
+      if (data.rows[0].email == email && data.rows[0].password == password) {
+        req.session.user = req.body.email;
+        res.redirect('/projects') // redirect baca project.js
+      } else {
+        req.flash('info', 'email or password is wrong')
+        res.redirect('/');
+      }
+    })
   });
 
   router.get('/logout', (req, res) => {

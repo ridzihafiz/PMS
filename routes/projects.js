@@ -19,13 +19,22 @@ module.exports = (pool) => {
     res.render('projects/list', { user: req.session.user });
   });
 
-  // router.post('/', isLoggedIn, (req, res, next) => {
-  //   res.redirect('/projects', { user: req.session.user });
-  // });
+  // =====================NAVBAR======================== \\
+  router.get('/navprofile', isLoggedIn, function (req, res, next) {
+    res.render('profile/view', { user: req.session.user });
+  });
 
-  // router.get('/profile/view', isLoggedIn, function (req, res, next) {
-  //   res.render('profile/view', { user: req.session.user });
-  // });
+  router.get('/navprojects', isLoggedIn, function (req, res, next) {
+    res.render('projects/list', { user: req.session.user });
+  });
+
+  // router bebas namanya dan harus sama dengan button ejs
+  router.get('/add', isLoggedIn, (req, res, next) => {
+    // render mengambil folder projects dan file add.ejs
+    res.render('projects/add', { user: req.session.user });
+  });
+
+  
 
   return router;
 };
