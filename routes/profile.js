@@ -11,13 +11,13 @@ const isLoggedIn = (req, res, next) => {
 
 module.exports = (pool) => {
 
-  router.get('/', isLoggedIn, (req, res, next) => {
-    res.render('projects/list');
-  });
+  // router.get('/', isLoggedIn, (req, res, next) => {
+  //   res.render('projects/list');
+  // });
 
-  router.post('/', isLoggedIn, (req, res, next) => {
-    res.redirect('/projects');
-  });
+  // router.post('/', isLoggedIn, (req, res, next) => {
+  //   res.redirect('/projects');
+  // });
 
   // router.get('/profile/view', isLoggedIn, function (req, res, next) {
   //   res.render('profile/view', { user: req.session.user });

@@ -1,0 +1,141 @@
+<% include ../partials/header %>
+
+<div class="container">
+
+    <br>
+    <h4>Filter</h4>
+    <hr>
+    <form action="/" method="get">
+
+        <div class="col-auto my-3 row">
+            <label for="disabledTextInput" class="col-sm-2 col-form-label"><input type="checkbox" name="cbId">ID</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="disabledTextInput" name="id" value="" placeholder="ID">
+            </div>
+        </div>
+
+        <div class="col-auto my-3 row">
+            <label for="formGroupExampleInput2" class="col-sm-2 col-form-label"><input type="checkbox"
+                    name="cbEmail">Email</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="formGroupExampleInput2" name="email" value=""
+                    placeholder="Email">
+            </div>
+        </div>
+
+        <div class="col-auto my-3 row">
+            <label for="formGroupExampleInput2" class="col-sm-2 col-form-label"><input type="checkbox"
+                    name="cbName">Name</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="formGroupExampleInput2" name="name" value=""
+                    placeholder="Name">
+            </div>
+        </div>
+
+        <div class="col-auto my-3 row">
+            <label class="col-sm-2 col-form-label" for="inlineFormCustomSelect"><input type="checkbox"
+                    name="cbPosition">Position</label>
+            <div class="col-sm-10">
+                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="position">
+                    <option selected value="">Choose the Position ...</option>
+                    <option value="manager">Manager</option>
+                    <option value="dev">Software Developer</option>
+                    <option value="qa">Quality Assurance</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-auto my-3 row">
+            <label class="col-sm-2 col-form-label" for="inlineFormCustomSelect"><input type="checkbox"
+                    name="cbTypeJob">Type Job</label>
+            <div class="col-sm-10">
+                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="typejob">
+                    <option selected value="">Choose the Type Job ...</option>
+                    <option value="ft">Full-time</option>
+                    <option value="pt">Part-time</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <br>
+    <br>
+    <h4>Options</h4>
+    <hr>
+    <form action="/" method="post">
+        <div>
+            <div class="col-auto my-2 row">
+                <label for="disabledTextInput" class="col-sm-2 col-form-label"><input type="checkbox"
+                        name="cbId">ID</label>
+            </div>
+
+            <div class="col-auto my-2 row">
+                <label class="col-sm-2 col-form-label" for="inlineFormCustomSelect"><input type="checkbox"
+                        name="cbEmail">Email</label>
+            </div>
+
+            <div class="col-auto my-2 row">
+                <label for="formGroupExampleInput2" class="col-sm-2 col-form-label"><input type="checkbox"
+                        name="cbName">Name</label>
+            </div>
+
+            <div class="col-auto my-2 row">
+                <label class="col-sm-2 col-form-label" for="inlineFormCustomSelect"><input type="checkbox"
+                        name="cbPosition">Position</label>
+            </div>
+
+            <div class="col-auto my-2 row">
+                <label class="col-sm-2 col-form-label" for="inlineFormCustomSelect"><input type="checkbox"
+                        name="cbTypeJob">Type Job</label>
+            </div>
+        </div>
+    </form>
+
+    <br>
+    <br>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Type Job</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>ridzi@mail.com</td>
+                <td>Ridzi</td>
+                <td>Manager</td>
+                <td>Full-time</td>
+                <td>
+                    <a class="btn btn-success" href="/users/usersedit">Edit</a>
+                    <a class="btn btn-danger" href="delete/">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <nav aria-label="Page navigation example" style="margin-top:1%">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="">Previous</a>
+            </li>
+
+            <li class="page-item"><a class="page-link" href=""></a></li>
+
+            <li class="page-item"><a class="page-link" href="">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+    <a class="btn btn-primary" href="/users/usersadd">Add User</a>
+    <br>
+</div>
+
+<% include ../partials/footer %>

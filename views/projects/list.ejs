@@ -74,7 +74,7 @@
             <td><%#= item.string %></td>
             <td><%#= item.boolean %></td>
             <td>
-                <a class="btn btn-success" href="edit/<%#= item.id %>">Edit</a>
+                <a class="btn btn-success" href="/projects/edit<%#= item.id %>">Edit</a>
                 <a class="btn btn-danger" href="delete/<%#= item.id %>">Delete</a>
             </td>
         </tr>
@@ -99,7 +99,7 @@
 </nav>
 
 <!-- /projects mengambil router project,js -->
-<!-- /add mengambil get /add -->
+<!-- /add mengambil router get /add -->
 <a class="btn btn-primary" href="/projects/add">Add Projects</a>
 <br>
 </div>
