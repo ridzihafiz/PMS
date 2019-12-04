@@ -1,45 +1,37 @@
 var express = require('express');
 var router = express.Router();
+var helpers = require('../helpers/utils');
 
-const isLoggedIn = (req, res, next) => {
-  if (req.session.user) {
-    next();
-  } else {
-    res.redirect('/')
-  }
-}
 
 module.exports = (pool) => {
 
-  /* GET home page. */
   router.get('/', function (req, res, next) {
-    res.render('index', { info: req.flash('info') });
+    res.render('login', { info: req.flash('info') });
   });
 
-  // router.get('/projects', isLoggedIn, function (req, res, next) {
-  //   res.render('projects/list', { user: req.session.user });
-  // });
-
-  // router.get('/projects/add', isLoggedIn, function (req, res, next) {
-  //   res.render('/projects/add', { user: req.session.user });
-  // });
-
   router.post('/login', function (req, res, next) {
+    // req.body email dan password di ambil dari name ejs
     let { email, password } = req.body;
-    let sql = `SELECT email, password FROM users WHERE email = '${email}'`
+    let sql = `SELECT * FROM users WHERE email = '${email}'`
     pool.query(sql, (err, data) => {
       // console.log(data);
-      if (data.rows[0].email == email && data.rows[0].password == password) {
-        req.session.user = req.body.email;
-        res.redirect('/projects') // redirect baca project.js
+      if (data.rows.length > 0) {
+        if (data.rows[0].email == email && data.rows[0].password == password) {
+          data.rows[0].password = null
+          req.session.user = data.rows[0];
+          res.redirect('/projects') // redirect baca project.js
+        } else {
+          req.flash('info', 'password is wrong')
+          res.redirect('/');
+        }
       } else {
-        req.flash('info', 'email or password is wrong')
+        req.flash('info', 'email is wrong')
         res.redirect('/');
       }
     })
   });
 
-  router.get('/logout', (req, res) => {
+  router.get('/logout', helpers.isLoggedIn, (req, res) => {
     req.session.destroy(function (err) {
       res.redirect('/');
     })
@@ -48,5 +40,3 @@ module.exports = (pool) => {
   return router;
 
 };
-
-// module.exports = router;

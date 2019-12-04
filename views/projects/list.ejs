@@ -3,10 +3,10 @@
 <br>
 <h4>Filter</h4>
 <hr>
-<form action="/" method="get">
+<form action="/projects" method="get">
 
     <div class="col-auto my-3 row">
-        <label for="disabledTextInput" class="col-sm-2 col-form-label"><input type="checkbox" name="cbId">ID</label>
+        <label for="disabledTextInput" class="col-sm-2 col-form-label"><input type="checkbox" name="ckid">ID</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" id="disabledTextInput" name="id" value="" placeholder="ID">
         </div>
@@ -14,7 +14,7 @@
 
     <div class="col-auto my-3 row">
         <label for="formGroupExampleInput2" class="col-sm-2 col-form-label"><input type="checkbox"
-                name="cbName">Name</label>
+                name="ckname">Name</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" id="formGroupExampleInput2" name="name" value="" placeholder="Name">
         </div>
@@ -22,12 +22,13 @@
 
     <div class="col-auto my-3 row">
         <label class="col-sm-2 col-form-label" for="inlineFormCustomSelect"><input type="checkbox"
-                name="cbBoolean">Member</label>
+                name="ckmember">Member</label>
         <div class="col-sm-10">
             <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="member">
                 <option selected value="">Choose the members ...</option>
-                <option value="True">Garis</option>
-                <option value="False">Ridzi</option>
+                <% users.forEach (item => {%>
+                <option value="<%= item.userid %>"><%= item.firstname + ' ' + item.lastname %></option>
+                <% }) %> 
             </select>
         </div>
     </div>
@@ -68,32 +69,32 @@
         </tr>
     </thead>
     <tbody>
-        <%# data.forEach((item, index) => {%>
+        <% data.forEach((item, index) => {%>
         <tr>
-            <td><%#= item.id %></td>
-            <td><%#= item.string %></td>
-            <td><%#= item.boolean %></td>
+            <td><%= item.projectid %></td>
+            <td><%= item.name %></td>
+            <td><%= item.members %></td>
             <td>
                 <a class="btn btn-success" href="/projects/edit<%#= item.id %>">Edit</a>
                 <a class="btn btn-danger" href="delete/<%#= item.id %>">Delete</a>
             </td>
         </tr>
-        <%# }) %>
+        <% }) %>
     </tbody>
 </table>
 <br>
 
 <nav aria-label="Page navigation example" style="margin-top:1%">
     <ul class="pagination">
-        <li class="page-item <%#= current == 1 ? 'disabled' : ''%>"><a class="page-link"
-                href="<%#= query.replace(`page=${parseInt(current)}`, `page=${parseInt(current) - 1}`) %>">Previous</a>
+        <li class="page-item <%= current == 1 ? 'disabled' : ''%>"><a class="page-link"
+                href="/projects<%= url.replace(`page=${parseInt(current)}`, `page=${parseInt(current) - 1}`) %>">Previous</a>
         </li>
-        <%# for(let i = 1; i <= pages; i++){ %>
-        <li class="page-item <%#= current == i ? 'active' : '' %>"><a class="page-link"
-                href="<%#= query.replace(`page=${current}`, `page=${i}`) %>"><%#= i %></a></li>
-        <%# } %>
-        <li class="page-item <%#= current == pages ? 'disabled' : ''%>"><a class="page-link"
-                href="<%#= query.replace(`page=${parseInt(current)}`, `page=${parseInt(current) + 1}`) %>">Next</a>
+        <% for(let i = 1; i <= pages; i++){ %>
+        <li class="page-item <%= current == i ? 'active' : '' %>"><a class="page-link"
+                href="/projects<%= url.replace(`page=${current}`, `page=${i}`) %>"><%= i %></a></li>
+        <% } %>
+        <li class="page-item <%= current == pages ? 'disabled' : ''%>"><a class="page-link"
+                href="/projects<%= url.replace(`page=${parseInt(current)}`, `page=${parseInt(current) + 1}`) %>">Next</a>
         </li>
     </ul>
 </nav>
