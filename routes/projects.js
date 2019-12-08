@@ -56,11 +56,13 @@ module.exports = (pool) => {
       // console.log('data >', sql);
 
       pool.query(sql, (err, projectData) => {
-
+        // console.log('projectdata> ', projectData);
+        
         if (err) throw err;
 
         pool.query(sqlMembers, (err, memberData) => {
-
+          // console.log('memberdata> ', memberData);
+          
           projectData.rows.map(project => {
             project.members = memberData.rows.filter(member => { return member.projectid == project.projectid }).map(data => data.fullname)
           })
@@ -90,6 +92,7 @@ module.exports = (pool) => {
 
   });
 
+  
 
   router.get('/add', helpers.isLoggedIn, (req, res, next) => {
     let sql = `SELECT userid, firstname || ' ' || lastname AS fullname from users`
@@ -108,41 +111,62 @@ module.exports = (pool) => {
 
       // if (req.body.members == undefined) {
 
-        let sqlnext = `SELECT MAX(projectid) total FROM projects`;
+      let sqlnext = `SELECT MAX(projectid) total FROM projects`;
 
-        pool.query(sqlnext, (err, result) => {
-          if (err) return res.send(err);
+      pool.query(sqlnext, (err, result) => {
+        if (err) return res.send(err);
 
-          let temp = [];
-          const projectId = result.rows[0].total;
-          if (typeof req.body.members == "string") {
-            temp.push(`(${req.body.members}, ${projectId})`);
-          } else {
-            for (let i = 0; i < req.body.members.length; i++) {
-              temp.push(`(${req.body.members[i]}, ${projectId})`);
-            }
+        let temp = [];
+        const projectId = result.rows[0].total;
+        if (typeof req.body.members == "string") {
+          temp.push(`(${req.body.members}, ${projectId})`);
+        } else {
+          for (let i = 0; i < req.body.members.length; i++) {
+            temp.push(`(${req.body.members[i]}, ${projectId})`);
           }
-          let sqladd = `INSERT INTO members (userid, projectid) VALUES ${temp.join(
-            ", "
-          )}`;
+        }
+        let sqladd = `INSERT INTO members (userid, projectid) VALUES ${temp.join(
+          ", "
+        )}`;
 
-          pool.query(sqladd, err => {
-            if (err) res.send(err);
-            req.flash("info", "1 record projects inserted");
-            res.redirect("/projects");
-          });
-
+        pool.query(sqladd, err => {
+          if (err) res.send(err);
+          req.flash("info", "1 record projects inserted");
+          res.redirect("/projects");
         });
+
+      });
       // }
     });
   });
 
 
-  router.get('/edit', helpers.isLoggedIn, (req, res, next) => {
-    // let sql = `SELECT * FROM projects`
-    // render mengambil folder projects dan file edit.ejs
-    res.render('projects/edit', { user: req.session.user });
+
+  router.get('/edit/:id', helpers.isLoggedIn, (req, res, next) => {
+    let edit = parseInt(req.params.id);
+    let sql = `SELECT members.userid, projects.name, projects.projectid FROM members LEFT JOIN projects ON projects.projectid = members.projectid WHERE projects.projectid =${edit}`
+    console.log(sql);
+    
+    pool.query(sql, (err, data) => {
+      pool.query(`SELECT * FROM users`, (err, user) => {
+        if (err) throw err;
+        console.log('suksess edit');
+        res.render('projects/edit', {
+          name: data.rows[0].name,
+          projectid: data.rows[0].projectid,
+          members: data.rows.map(item => item.userid),
+          users: user.rows,
+          user: req.session.user
+        })
+      })
+    })
   });
+
+  // router.post('/edit/:projectid', helpers.isLoggedIn, (req, res, next) => {
+  //   let sql = `UPDATE projects SET name=${req.body.name} WHERE projectid=${req.params.projectid}`
+  //   res.redirect('/projects', { user: req.session.user });
+  // });
+
 
   router.get('/delete', helpers.isLoggedIn, (req, res, next) => {
     // render mengambil folder projects dan file edit.ejs
