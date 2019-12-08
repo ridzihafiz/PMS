@@ -28,7 +28,7 @@
                 <option selected value="">Choose the members ...</option>
                 <% users.forEach (item => {%>
                 <option value="<%= item.userid %>"><%= item.firstname + ' ' + item.lastname %></option>
-                <% }) %> 
+                <% }) %>
             </select>
         </div>
     </div>
@@ -37,24 +37,26 @@
 
 <br>
 <br>
-<h4>Options</h4>
+<h4>Show Column</h4>
 <hr>
-<form action="/" method="post">
+<form action="/projects" method="post">
     <div>
         <div class="col-auto my-2 row">
-            <label for="disabledTextInput" class="col-sm-2 col-form-label"><input type="checkbox" name="cbId">ID</label>
+            <label for="cbid" class="col-sm-2 col-form-label"><input type="checkbox" name="cbid" value="true"
+                    <%#= option.cbid== "true" ? 'checked': '' %>>ID</label>
         </div>
 
         <div class="col-auto my-2 row">
-            <label for="formGroupExampleInput2" class="col-sm-2 col-form-label"><input type="checkbox"
-                    name="cbName">Name</label>
+            <label for="cbname" class="col-sm-2 col-form-label"><input type="checkbox" name="cbname" value="true"
+                    <%#= option.cbname== "true" ? 'checked': '' %>>Name</label>
         </div>
 
         <div class="col-auto my-2 row">
-            <label class="col-sm-2 col-form-label" for="inlineFormCustomSelect"><input type="checkbox"
-                    name="cbBoolean">Member</label>
+            <label for="cbmember" class="col-sm-2 col-form-label"><input type="checkbox" name="cbmember" value="true"
+                    <%#= option.cbmember== "true" ? 'checked': '' %>>Member</label>
         </div>
     </div>
+    <button type="submit" class="btn btn-primary">Apply</button>
 </form>
 
 <br>

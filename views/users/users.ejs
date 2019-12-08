@@ -107,17 +107,19 @@
             </tr>
         </thead>
         <tbody>
+            <% data.forEach((item) => { %>
             <tr>
-                <td>1</td>
-                <td>ridzi@mail.com</td>
-                <td>Ridzi</td>
-                <td>Manager</td>
-                <td>Full-time</td>
+                <td><%= item.userid %></td>
+                <td><%= item.email %></td>
+                <td><%= item.firstname + ' ' + item.lastname %></td>
+                <td><%= item.position %></td>
+                <td><%= item.typejob %></td>
                 <td>
                     <a class="btn btn-success" href="/users/usersedit">Edit</a>
                     <a class="btn btn-danger" href="delete/">Delete</a>
                 </td>
             </tr>
+            <% }); %>
         </tbody>
     </table>
     <br>

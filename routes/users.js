@@ -5,33 +5,53 @@ var helpers = require('../helpers/utils');
 
 module.exports = (pool) => {
   
-  router.get('/navusers', helpers.isLoggedIn, function (req, res, next) {
-    res.render('users/users', { user: req.session.user });
+  router.get('/', helpers.isLoggedIn, function (req, res, next) {
+
+    sql = `SELECT * FROM users`
+
+    pool.query(sql, (err, result) => {
+      // console.log(result.rows);
+      
+      res.render('users/users', { 
+        user: req.session.user,
+        data: result.rows
+      });
+    });
   });
 
   
   // USERS CRUD
   // router bebas namanya dan harus sama dengan button ejs
-  router.get('/usersadd', helpers.isLoggedIn, (req, res, next) => {
+  router.get('/usersadd', (req, res, next) => {
     // render mengambil folder projects dan file usersadd.ejs
     res.render('users/usersadd', { user: req.session.user });
   });
 
+  // router.post('/usersadd-save', (req, res, next) => {
+  //   console.log(req.body);
+  //   res.render('Berhasil');
+  // });
+
+
   router.post('/usersadd', helpers.isLoggedIn, (req, res, next) => {
+    console.log(req.body);
+
     let email = req.body.email
     let password = req.body.password
     let firstname = req.body.firstname
     let lastname = req.body.lastname
+    let position = req.body.position
+    let typejob = req.body.typejob
 
-    let sql = `INSERT INTO users (email, password, firstname, lastname) VALUES ($1, $2, $3, $4)`;
-    // let data = [req.body.string, req.body.integer, req.body.float, req.body.date, req.body.boolean]
-    let data = [email, password, firstname, lastname]
+    let sql = `INSERT INTO users (email, password, firstname, lastname, position, typejob) VALUES ($1, $2, $3, $4, $5, $6)`;
+    
+    let data = [email, password, firstname, lastname, position, typejob]
 
     pool.query(sql, data, (err) => {
       if (err) throw err;
       console.log("1 record inserted");
     });
-    res.redirect('users/usersadd', { user: req.session.user });
+    res.redirect('/users', { user: req.session.user });
   });
 
 

@@ -4,19 +4,19 @@
 <h4>Profile</h4>
 <hr>
 
-<form action="/" method="post">
+<form action="" method="post">
   <fieldset disabled>
     <div class="form-group row">
-      <label for="disabledTextInputEmail" class="col-sm-2 col-form-label">Email</label>
+      <label for="disabled-input-email" class="col-sm-2 col-form-label">Email</label>
       <div class="col-sm-10">
-        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+        <input type="email" class="form-control" id="disabled-input-email" name="email" value="<%= data.email %>">
       </div>
     </div>
   </fieldset>
   <div class="form-group row">
-    <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+    <label for="input-password" class="col-sm-2 col-form-label">Password</label>
     <div class="col-sm-10">
-      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+      <input type="password" class="form-control" id="input-password" name="password" value="<%#= data.password %>" required>
     </div>
   </div>
   <fieldset class="form-group">

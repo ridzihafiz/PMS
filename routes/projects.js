@@ -7,7 +7,7 @@ module.exports = (pool) => {
   router.get('/', helpers.isLoggedIn, (req, res, next) => {
 
     const pathside = "projects";
-    console.log(req.url);
+    // console.log(req.url);
 
     const { ckid, id, ckname, name, ckmember, member } = req.query;
     const url = (req.url == '/') ? `/?page=1` : req.url
@@ -32,8 +32,8 @@ module.exports = (pool) => {
       sql += ` WHERE ${params.join(" AND ")}`
     }
     sql += `) AS projectmember`;
-    console.log('counting', sql);
-    
+    // console.log('counting', sql);
+
 
     pool.query(sql, (err, count) => {
 
@@ -41,7 +41,7 @@ module.exports = (pool) => {
       const pages = Math.ceil(total / limit)
 
       sql = `SELECT DISTINCT projects.projectid, projects.name FROM projects LEFT JOIN members ON projects.projectid = members.projectid`
-                  
+
       if (params.length > 0) {
         sql += ` WHERE ${params.join(" AND ")}`
       }
@@ -53,7 +53,7 @@ module.exports = (pool) => {
       subquery += ` ORDER BY projects.projectid LIMIT ${limit} OFFSET ${offset}`
       let sqlMembers = `SELECT projects.projectid, users.userid, CONCAT (users.firstname,' ',users.lastname) AS fullname FROM projects LEFT JOIN members ON projects.projectid = members.projectid LEFT JOIN users ON users.userid = members.userid WHERE projects.projectid IN (${subquery})`
 
-      console.log('data', sql);
+      // console.log('data >', sql);
 
       pool.query(sql, (err, projectData) => {
 
@@ -68,7 +68,7 @@ module.exports = (pool) => {
           let sqloption = `SELECT projectsoptions FROM users WHERE userid =${req.session.user.userid}`;
 
           pool.query(sqlusers, (err, data) => {
-            console.log('this data users >', data.rows);
+            // console.log('this data users >', data.rows);
 
             pool.query(sqloption, (err, options) => {
               res.render('projects/list', {
@@ -87,9 +87,9 @@ module.exports = (pool) => {
         })
       })
     })
-    
+
   });
-  
+
 
   router.get('/add', helpers.isLoggedIn, (req, res, next) => {
     let sql = `SELECT userid, firstname || ' ' || lastname AS fullname from users`
@@ -106,36 +106,40 @@ module.exports = (pool) => {
 
     pool.query(sql, (err) => {
 
-      let sqlnext = `SELECT MAX(projectid) total FROM projects`;
-      
-      pool.query(sqlnext, (err, result) => {
-        if (err) return res.send(err);
-        
-        let temp = [];
-        const projectId = result.rows[0].total;
-        if (typeof req.body.members == "string") {
-          temp.push(`(${req.body.members}, ${projectId})`);
-        } else {
-          for (let i = 0; i < req.body.members.length; i++) {
-            temp.push(`(${req.body.members[i]}, ${projectId})`);
+      // if (req.body.members == undefined) {
+
+        let sqlnext = `SELECT MAX(projectid) total FROM projects`;
+
+        pool.query(sqlnext, (err, result) => {
+          if (err) return res.send(err);
+
+          let temp = [];
+          const projectId = result.rows[0].total;
+          if (typeof req.body.members == "string") {
+            temp.push(`(${req.body.members}, ${projectId})`);
+          } else {
+            for (let i = 0; i < req.body.members.length; i++) {
+              temp.push(`(${req.body.members[i]}, ${projectId})`);
+            }
           }
-        }
-        let sqladd = `INSERT INTO members (userid, projectid) VALUES ${temp.join(
-          ", "
-        )}`;
+          let sqladd = `INSERT INTO members (userid, projectid) VALUES ${temp.join(
+            ", "
+          )}`;
 
-        pool.query(sqladd, err => {
-          if (err) res.send(err);
-          req.flash("info", "1 record projects inserted");
-          res.redirect("/projects");
+          pool.query(sqladd, err => {
+            if (err) res.send(err);
+            req.flash("info", "1 record projects inserted");
+            res.redirect("/projects");
+          });
+
         });
-
-      });
+      // }
     });
   });
 
 
   router.get('/edit', helpers.isLoggedIn, (req, res, next) => {
+    // let sql = `SELECT * FROM projects`
     // render mengambil folder projects dan file edit.ejs
     res.render('projects/edit', { user: req.session.user });
   });
