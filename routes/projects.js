@@ -73,6 +73,8 @@ module.exports = (pool) => {
             // console.log('this data users >', data.rows);
 
             pool.query(sqloption, (err, options) => {
+              // console.log(options);
+              
               res.render('projects/list', {
                 data: projectData.rows,
                 query: req.query,
@@ -89,8 +91,21 @@ module.exports = (pool) => {
         })
       })
     })
-
   });
+
+  // router.post('/update', (req, res) => {
+    
+  //   let sql = `UPDATE users SET projectsoptions = '${JSON.stringify(req.body)}' WHERE userid =${req.session.user.userid} `
+  //   // console.log(sql);
+  //   // console.log(req.session.user);
+
+  //   pool.query(sql, (err) => {
+  //     if (err) throw err;
+
+  //     res.redirect('/projects');
+  //   })
+
+  // })
 
   
 
@@ -110,6 +125,7 @@ module.exports = (pool) => {
     pool.query(sql, (err) => {
 
       // if (req.body.members == undefined) {
+      // req.body.members || null
 
       let sqlnext = `SELECT MAX(projectid) total FROM projects`;
 
@@ -142,15 +158,15 @@ module.exports = (pool) => {
 
 
 
-  router.get('/edit/:id', helpers.isLoggedIn, (req, res, next) => {
-    let edit = parseInt(req.params.id);
-    let sql = `SELECT members.userid, projects.name, projects.projectid FROM members LEFT JOIN projects ON projects.projectid = members.projectid WHERE projects.projectid =${edit}`
-    console.log(sql);
+  router.get('/edit/:projectid', helpers.isLoggedIn, (req, res, next) => {
+    let edit = parseInt(req.params.projectid);
+    let sql = `SELECT members.userid, projects.name, projects.projectid FROM members LEFT JOIN projects ON projects.projectid = members.projectid WHERE projects.projectid =$1`
+    // console.log(sql);
     
-    pool.query(sql, (err, data) => {
+    pool.query(sql, [edit], (err, data) => {
       pool.query(`SELECT * FROM users`, (err, user) => {
         if (err) throw err;
-        console.log('suksess edit');
+
         res.render('projects/edit', {
           name: data.rows[0].name,
           projectid: data.rows[0].projectid,
@@ -162,16 +178,57 @@ module.exports = (pool) => {
     })
   });
 
-  // router.post('/edit/:projectid', helpers.isLoggedIn, (req, res, next) => {
-  //   let sql = `UPDATE projects SET name=${req.body.name} WHERE projectid=${req.params.projectid}`
-  //   res.redirect('/projects', { user: req.session.user });
-  // });
+  router.post('/edit/:projectid', helpers.isLoggedIn, (req, res, next) => {
 
+    const { name, member } = req.body;
+    let id = req.params.projectid;
+    console.log(id);
+    
+    let sql = `UPDATE projects SET name='${req.body.name}' WHERE projectid=${id}`
+    console.log(req.body);
+    pool.query(sql, (err) => {
+      res.redirect('/projects')
+    })
+    
+    // pool.query(sql, [id], (err, row) => {
+    //   if (err) throw err;
+    //   pool.query(`DELETE FROM members WHERE projectid = ${req.params.projectid}`, (err) => {
+    //     let temp = []
+    //     if (typeof req.body.member == 'string') {
+    //       temp.push(`(${req.body.member}, ${id})`)
+    //     } else {
+    //       for (let i = 0; i < member.length; i++) {
+    //         temp.push(`(${member[i]}, ${id})`)
+    //       }
+    //     }
+    //     console.log('Updated');
 
-  router.get('/delete', helpers.isLoggedIn, (req, res, next) => {
-    // render mengambil folder projects dan file edit.ejs
-    res.render('projects/delete', { user: req.session.user });
+    //     let input = `INSERT INTO members (userid, projectid)VALUES ${temp.join(",")}`;
+    //     pool.query(input, (err) => {
+    //       res.redirect('/projects')
+    //     })
+    //   })
+    // });
   });
+
+
+
+  router.get('/deleted/:projectid', (req, res) => {
+    
+    let deleted = parseInt(req.params.projectid)
+    let sql1 = `DELETE FROM members WHERE projectid=$1`;
+    let sql2 = `DELETE FROM projects WHERE projectid=$1;`
+    
+    pool.query(sql1, [deleted], (err) => {
+      if (err) throw err;
+      pool.query(sql2, [deleted], (err) => {
+        if (err) throw err;
+        console.log('deleted 1 project');
+        res.redirect('/projects');
+      })
+    })
+  })
+
 
 
 

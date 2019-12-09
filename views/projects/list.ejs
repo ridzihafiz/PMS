@@ -39,7 +39,7 @@
 <br>
 <h4>Show Column</h4>
 <hr>
-<form action="/projects" method="post">
+<form action="/projects/update" method="post">
     <div>
         <div class="col-auto my-2 row">
             <label for="cbid" class="col-sm-2 col-form-label"><input type="checkbox" name="cbid" value="true"
@@ -78,7 +78,7 @@
             <td><%= item.members %></td>
             <td>
                 <a class="btn btn-success" href="/projects/edit/<%= item.projectid %>">Edit</a>
-                <a class="btn btn-danger" href="delete/<%#= item.id %>">Delete</a>
+                <a class="btn btn-danger" onclick="return confirm('Delete ?')" href="/projects/deleted/<%= item.projectid %>">Delete</a>
             </td>
         </tr>
         <% }) %>
