@@ -62,7 +62,7 @@
 
     <br>
     <br>
-    <h4>Options</h4>
+    <h4>Show Column</h4>
     <hr>
     <form action="/" method="post">
         <div>
@@ -116,7 +116,7 @@
                 <td><%= item.typejob %></td>
                 <td>
                     <a class="btn btn-success" href="/users/usersedit">Edit</a>
-                    <a class="btn btn-danger" href="delete/">Delete</a>
+                    <a class="btn btn-danger" onclick="return confirm('Yakin ente zi, deleted ?')" href="/users/delete/<%= item.userid %>">Delete</a>
                 </td>
             </tr>
             <% }); %>

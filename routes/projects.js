@@ -180,7 +180,7 @@ module.exports = (pool) => {
 
   router.post('/edit/:projectid', helpers.isLoggedIn, (req, res, next) => {
 
-    const { name, member } = req.body;
+    // const { name, member } = req.body;
     let id = req.params.projectid;
     console.log(id);
     
