@@ -20,7 +20,8 @@ module.exports = (pool) => {
 
           data.rows[0].password = null
           req.session.user = data.rows[0];
-
+          // console.log(req.session.user.email);
+          
           res.redirect('/projects') // redirect baca project.js
         } else {
           req.flash('info', 'password is wrong')

@@ -14,7 +14,7 @@ module.exports = (pool) => {
       if (err) throw err;
 
       res.render('profile/view', {
-        user: req.session.user,
+        user: req.session.user.email,
         data: result.rows[0],
         result
       })

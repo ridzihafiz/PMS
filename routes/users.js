@@ -13,7 +13,7 @@ module.exports = (pool) => {
       // console.log(result.rows);
       
       res.render('users/users', { 
-        user: req.session.user,
+        user: req.session.user.email,
         data: result.rows
       });
     });
@@ -24,7 +24,7 @@ module.exports = (pool) => {
   // router bebas namanya dan harus sama dengan button ejs
   router.get('/usersadd', helpers.isLoggedIn, (req, res, next) => {
     // render mengambil folder projects dan file usersadd.ejs
-    res.render('users/usersadd', { user: req.session.user });
+    res.render('users/usersadd', { user: req.session.user.email });
   });
 
   router.post('/usersadd', helpers.isLoggedIn, (req, res, next) => {
@@ -53,9 +53,28 @@ module.exports = (pool) => {
   });
 
 
-  router.get('/usersedit', helpers.isLoggedIn, (req, res, next) => {
-    res.render('users/usersedit', { user: req.session.user });
+  router.get('/usersedit/:userid', helpers.isLoggedIn, (req, res, next) => {
+
+    let id = parseInt(req.params.userid)
+    let sql = `SELECT * FROM users WHERE userid=${req.params.userid}`
+    // console.log(sql);
+    
+    pool.query(sql, (err, data) => {
+      // console.log(data.rows);
+      
+      if (err) throw err;
+      res.render('users/usersedit', { 
+        data: data.rows[0],
+        user: req.session.user.email });
+    })
   });
+
+  // router.post('/usersedit/:userid', helpers.isLoggedIn, (req, res, next) => {
+  //   let id = req.params.userid
+    
+  //   res.redirect('/users', { user: req.session.user });
+  // });
+
 
 
   router.get('/delete/:userid', helpers.isLoggedIn, (req, res, next) => {

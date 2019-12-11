@@ -84,7 +84,7 @@ module.exports = (pool) => {
                 url: url,
                 pathside,
                 // option: JSON.parse(options.rows[0].projectsoptions),
-                user: req.session.user
+                user: req.session.user.email
               })
             })
           })
@@ -113,7 +113,7 @@ module.exports = (pool) => {
     let sql = `SELECT userid, firstname || ' ' || lastname AS fullname from users`
 
     pool.query(sql, (err, users) => {
-      res.render('projects/add', { user: req.session.user, users: users.rows });
+      res.render('projects/add', { user: req.session.user.email, users: users.rows });
 
     })
   });
@@ -172,7 +172,7 @@ module.exports = (pool) => {
           projectid: data.rows[0].projectid,
           members: data.rows.map(item => item.userid),
           users: user.rows,
-          user: req.session.user
+          user: req.session.user.email
         })
       })
     })
